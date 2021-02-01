@@ -1,0 +1,31 @@
+name: test pypi
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      SHELL: /bin/bash
+
+    strategy:
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt-get install -y python3-virtualenv virtualenv nmap python3-pip
+        python -m pip install --upgrade pip
+        pip install commodity
+        pip install pyhamcrest
+        pip show -f commodity
+        python3 -c "import commodity"
+        python3 -c "from commodity.testing import assert_that; print(assert_that)"
+    - name: Test with tox
+      run: python3 -c "from commodity.testing import assert_that; print(assert_that)"
