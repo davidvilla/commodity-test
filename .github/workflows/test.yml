@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       SHELL: /bin/bash
 
@@ -20,9 +20,15 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: |
+        sudo apt-get update
         sudo apt-get install -y python3-pip
-        pip install commodity
-        pip show -f commodity
+        pip3 install pyhamcrest
+        pip3 install commodity
+        pip3 show -f commodity
         python3 -c "import commodity"
     - name: Test
-      run: python3 -c "from commodity.testing import assert_that; print(assert_that)"
+      run: |
+        python3 -c "from commodity.testing import assert_that; print(assert_that)"
+    - name: Test
+      run: |
+        echo "hola"
